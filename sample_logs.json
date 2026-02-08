@@ -1,0 +1,27 @@
+[
+  {
+    "level": "ERROR",
+    "source": "database",
+    "message": "Database connection failed: timeout"
+  },
+  {
+    "level": "INFO",
+    "source": "auth-service",
+    "message": "User login successful"
+  },
+  {
+    "level": "WARNING",
+    "source": "disk-monitor",
+    "message": "Disk space usage at 85%"
+  },
+  {
+    "level": "ERROR",
+    "source": "payment-service",
+    "message": "Null pointer exception in payment service"
+  },
+  {
+    "level": "INFO",
+    "source": "cache",
+    "message": "Cache refreshed successfully"
+  }
+]

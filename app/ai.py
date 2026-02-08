@@ -11,7 +11,7 @@ CATEGORIES = {
 }
 
 
-def analyze_log(message: str) -> tuple[str, int]:
+def analyze_log(message: str, threshold: int = 60) -> tuple[str, int]:
     texts = list(CATEGORIES.values())
     embeddings = model.encode(texts, convert_to_tensor=True)
     log_embedding = model.encode(message, convert_to_tensor=True)
@@ -19,7 +19,10 @@ def analyze_log(message: str) -> tuple[str, int]:
     scores = util.cos_sim(log_embedding, embeddings)[0]
     best_index = int(scores.argmax())
 
-    category = list(CATEGORIES.keys())[best_index]
     confidence = int(scores[best_index].item() * 100)
 
+    if confidence < threshold:
+        return "Uncertain", confidence
+
+    category = list(CATEGORIES.keys())[best_index]
     return category, confidence

@@ -1,8 +1,9 @@
 from fastapi import FastAPI
 
-from database import engine
-from models import Base
-from routes import router
+from app.database import engine
+from app.models import Base
+from app.routes import router
+
 
 app = FastAPI(
     title="AI Log Analyzer",

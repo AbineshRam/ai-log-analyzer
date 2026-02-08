@@ -1,12 +1,33 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from database import get_db
-from models import Log, Analysis
-from schemas import LogCreate, LogResponse, AnalysisResponse
-from ai import analyze_log
+from typing import List
+from fastapi import Query
+
+from app.database import get_db
+from app.models import Log, Analysis
+from app.schemas import LogCreate, LogResponse, AnalysisResponse
+from app.ai import analyze_log
+
 
 router = APIRouter()
+
+@router.get("/logs", response_model=List[LogResponse])
+def list_logs(
+    page: int = Query(1, ge=1),
+    size: int = Query(10, ge=1, le=100),
+    db: Session = Depends(get_db),
+):
+    offset = (page - 1) * size
+    logs = (
+        db.query(Log)
+        .order_by(Log.created_at.desc())
+        .offset(offset)
+        .limit(size)
+        .all()
+    )
+    return logs
+
 
 
 @router.post("/logs", response_model=LogResponse, status_code=status.HTTP_201_CREATED)
